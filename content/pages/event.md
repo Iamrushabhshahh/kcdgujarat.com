@@ -126,18 +126,6 @@ timeline:
     endTime: "14:00"
     label: "Lunch + Solutions Showcase"
     icon: "🍽️"
-  - time: "14:00"
-    endTime: "14:25"
-    label: "Platinum Sponsor Tech Talk"
-    icon: "⭐"
-    room: "Hall 1"
-    glance: false
-  - time: "14:30"
-    endTime: "14:55"
-    label: "Women in Tech Gathering"
-    icon: "💜"
-    room: "Hall 2"
-    glance: false
   - time: "15:00"
     endTime: "15:25"
     label: "Reserved Session"

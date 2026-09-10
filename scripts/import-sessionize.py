@@ -60,6 +60,8 @@ SESSION_SLUGS = {
     "1286667": "one-bad-label-cardinality-explosion",
     "1287042": "istio-consistent-hashing-webrtc",
     "1285396": "dbaas-on-kubernetes-mistakes",
+    "1326355": "visual-retrieval-ai-agents",
+    "1327665": "one-cluster-vms-containers-serverless",
 }
 
 # Sessionize has no keynote format — the organisers promote accepted talks to

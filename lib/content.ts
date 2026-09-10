@@ -17,6 +17,7 @@ import {
   CfpHomeSection,
   RegistrationConfigFrontmatter,
   EventConfigFrontmatter,
+  MixersConfigFrontmatter,
   SocialLinksFrontmatter,
   SponsorshipConfigFrontmatter,
   isPublished,
@@ -332,6 +333,36 @@ export async function getEventConfig(): Promise<EventConfig> {
       showTeam: false,
       venuePhotos: [],
       venueTravel: [],
+    };
+  }
+}
+
+export type MixersConfig = MixersConfigFrontmatter;
+
+/**
+ * Reads `content/pages/mixers.md`. The homepage renders the section only when
+ * this returns a published mixer, so an empty list is the off switch — a
+ * missing file is not an error.
+ */
+export async function getMixersConfig(): Promise<MixersConfig> {
+  ensureDevContentFresh();
+  try {
+    const raw = await fs.readFile(path.join(ROOT, 'pages', 'mixers.md'), 'utf8');
+    const { data } = matter(raw);
+    const parsed = MixersConfigFrontmatter.parse(data);
+    return {
+      ...parsed,
+      mixers: publishedOnly(parsed.mixers).sort(
+        (a, b) => a.order - b.order || a.name.localeCompare(b.name),
+      ),
+    };
+  } catch {
+    return {
+      eyebrow: 'Community Events',
+      title: 'Community Mixers',
+      description: '',
+      footnote: '',
+      mixers: [],
     };
   }
 }

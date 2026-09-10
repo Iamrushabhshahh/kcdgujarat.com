@@ -8,6 +8,7 @@ import { VenueSection } from '@/components/sections/VenueSection';
 import { TeamPreview } from '@/components/sections/TeamPreview';
 import { SponsorStrip } from '@/components/sections/SponsorStrip';
 import { CommunityPartners } from '@/components/sections/CommunityPartners';
+import { CommunityMixers } from '@/components/sections/CommunityMixers';
 import { FaqSection } from '@/components/sections/FaqSection';
 import { ComingSoon } from '@/components/sections/ComingSoon';
 import {
@@ -20,6 +21,7 @@ import {
   getCfpConfig,
   getRegistrationConfig,
   getEventConfig,
+  getMixersConfig,
   getSocialLinks,
 } from '@/lib/content';
 import { siteUrl, formatEventDate, formatWindowMoment } from '@/lib/utils';
@@ -86,7 +88,7 @@ export default async function HomePage() {
 
   const showTeam = event.showTeam;
 
-  const [speakers, sponsors, faqs, team, partners, cfp, registration, sessions] =
+  const [speakers, sponsors, faqs, team, partners, cfp, registration, sessions, mixers] =
     await Promise.all([
       getSpeakers(),
       getSponsors(),
@@ -96,6 +98,7 @@ export default async function HomePage() {
       getCfpConfig(),
       getRegistrationConfig(),
       getSessions(),
+      getMixersConfig(),
     ]);
   // Homepage shows a curated subset; the full grouped list lives on /faq.
   const featuredFaqs = faqs.filter((f) => f.featured);
@@ -147,6 +150,7 @@ export default async function HomePage() {
           // schedule before the announcement.
           sessions={cfp.showSpeakers ? sessions : []}
         />,
+        mixers.mixers.length > 0 ? <CommunityMixers key="mixers" config={mixers} /> : null,
         cfpOpen ? <CfpSection key="cfp" homeSection={cfp.homeSection} /> : null,
         showVenue ? (
           <VenueSection

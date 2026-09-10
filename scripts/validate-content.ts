@@ -12,6 +12,7 @@ import {
   SponsorshipConfigFrontmatter,
   RegistrationConfigFrontmatter,
   EventConfigFrontmatter,
+  MixersConfigFrontmatter,
   SocialLinksFrontmatter,
 } from '../lib/schema';
 
@@ -31,6 +32,7 @@ const targets: { dir: string; schema?: any; name: string; fileSchema?: Record<st
       'sponsorship.md': SponsorshipConfigFrontmatter,
       'registration.md': RegistrationConfigFrontmatter,
       'event.md': EventConfigFrontmatter,
+      'mixers.md': MixersConfigFrontmatter,
       'social.md': SocialLinksFrontmatter,
     },
   },

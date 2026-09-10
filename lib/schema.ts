@@ -378,6 +378,47 @@ export const RegistrationConfigFrontmatter = z
   });
 export type RegistrationConfigFrontmatter = z.infer<typeof RegistrationConfigFrontmatter>;
 
+/**
+ * A community mixer — an informal gathering alongside the conference. Mixers
+ * are deliberately not sessions and not `timeline` rows: they hold no slot in
+ * the printed schedule, so `when`/`where` are free text rather than the
+ * ISO/HH:mm the schedule parses.
+ */
+export const Mixer = RenderFlag.extend({
+  name: z.string(),
+  description: z.string().optional().default(''),
+  /** Free text, e.g. "14:30 – 14:55". Omit while the time is unsettled. */
+  when: z.string().optional(),
+  /** Room or area. Omit while the room is unsettled. */
+  where: z.string().optional(),
+  activities: z.array(z.string()).optional().default([]),
+  /** Card banner, 1200x630. Filenames carry a content hash — see handoff.md. */
+  image: z.string().optional(),
+  /**
+   * Alt text. Leave unset for art that only restates the title and description
+   * beside it — the card then marks it decorative rather than making a screen
+   * reader listen to both (CLAUDE.md §8.4).
+   */
+  imageAlt: z.string().optional(),
+  /** Only for a mixer with its own sign-up; ours are included with the ticket. */
+  rsvpUrl: z.string().url().optional(),
+  rsvpLabel: z.string().optional().default('RSVP Now'),
+  inviteOnly: z.boolean().optional().default(false),
+  accent: z.enum(['pink', 'blue', 'green']).optional().default('pink'),
+  order: z.number().optional().default(100),
+});
+export type Mixer = z.infer<typeof Mixer>;
+
+export const MixersConfigFrontmatter = z.object({
+  eyebrow: z.string().optional().default('Community Events'),
+  title: z.string().optional().default('Community Mixers'),
+  description: z.string().optional().default(''),
+  /** Small print under the grid. */
+  footnote: z.string().optional().default(''),
+  mixers: z.array(Mixer).optional().default([]),
+});
+export type MixersConfigFrontmatter = z.infer<typeof MixersConfigFrontmatter>;
+
 export const PartnerFrontmatter = RenderFlag.extend({
   name: z.string(),
   description: z.string().optional(),

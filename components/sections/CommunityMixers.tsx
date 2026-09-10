@@ -1,100 +1,117 @@
-import Link from 'next/link';
+import Image from 'next/image';
 import { Container } from '@/components/site/Container';
 import { SectionHeader } from '@/components/site/SectionHeader';
+import type { MixersConfig } from '@/lib/content';
 import { cn } from '@/lib/utils';
 
-const MIXERS = [
-  {
-    name: 'Women in Cloud Native',
-    description: 'Exclusive gathering for women in the cloud-native community.',
-    activities: [
-      'Casual networking across DevOps, SRE, and Platform Engineering',
-      'BoF discussions on careers, growth, and leadership',
-      'Light snacks, refreshments & special goodies',
-      'Fun photo session & networking moments',
-    ],
-    cta: { label: 'RSVP Now', href: '#' },
-    gradient: 'from-pink-400/30 via-orange-300/25 to-yellow-300/20',
-    eyebrow: 'Mixer 01',
-  },
-  {
-    name: 'Kubestronauts Mixer',
-    description: 'Exclusive gathering for Kubestronauts & Golden Kubestronauts.',
-    activities: [
-      'Connect with peers on the Kubernetes certification journey',
-      'Guidance for those planning their Kubestronauts path',
-      'BoF discussions on certifications, careers, and growth',
-      'Light snacks, refreshments & networking moments',
-    ],
-    cta: { label: 'RSVP Now', href: '#' },
-    gradient: 'from-sky-400/30 via-indigo-400/20 to-purple-400/20',
-    eyebrow: 'Mixer 02',
-  },
-  {
-    name: 'Community Leaders',
-    description: 'Exclusive for CNCG, Cloud, and Community Partner leads.',
-    activities: [
-      'Connect with fellow community builders and ecosystem leaders',
-      'Share experiences on building and sustaining tech communities',
-      'BoF discussions on community growth and leadership',
-      'Exchange ideas on collaborations across communities',
-    ],
-    cta: { label: 'Invite Only', href: '#', disabled: true },
-    gradient: 'from-emerald-400/30 via-teal-300/25 to-cyan-300/20',
-    eyebrow: 'Mixer 03',
-  },
-];
+interface Props {
+  config: MixersConfig;
+}
 
-export function CommunityMixers() {
+/**
+ * Card tints. Bullet colour is a `bg-*`, so it stays visible against the card
+ * rather than inheriting the low-contrast header wash.
+ */
+const ACCENTS = {
+  pink: { header: 'from-pink-400/30 via-orange-300/25 to-yellow-300/20', bullet: 'bg-pink-500' },
+  blue: { header: 'from-sky-400/30 via-indigo-400/20 to-purple-400/20', bullet: 'bg-kcd-primary' },
+  green: { header: 'from-emerald-400/30 via-teal-300/25 to-cyan-300/20', bullet: 'bg-emerald-600' },
+} as const;
+
+/**
+ * One card per mixer. A single mixer gets a centred column instead of a
+ * stretched third of the row; two or more fall into the grid.
+ */
+const COLUMNS = ['', 'max-w-xl mx-auto', 'sm:grid-cols-2 max-w-4xl mx-auto', 'sm:grid-cols-2 lg:grid-cols-3'];
+
+export function CommunityMixers({ config }: Props) {
+  const { mixers } = config;
+  if (mixers.length === 0) {
+    return null;
+  }
+
   return (
     <section id="mixers" className="py-20">
       <Container>
         <SectionHeader
-          eyebrow="Community Events"
-          title="Community Mixers"
-          description="Exclusive gatherings running alongside KCD Gujarat 2026 — connecting community leaders, certified professionals, and women in cloud native."
+          eyebrow={config.eyebrow}
+          title={config.title}
+          description={config.description}
           align="center"
         />
-        <div className="grid gap-6 lg:grid-cols-3">
-          {MIXERS.map((m) => (
-            <article
-              key={m.name}
-              className="relative overflow-hidden rounded-3xl border border-kcd-border bg-white shadow-card"
-            >
-              <div className={cn('h-32 w-full bg-gradient-to-br', m.gradient)} aria-hidden />
-              <div className="p-6">
-                <p className="text-xs font-semibold uppercase tracking-wider text-kcd-primary">{m.eyebrow}</p>
-                <h3 className="mt-1 font-display text-xl font-bold text-kcd-ink">{m.name}</h3>
-                <p className="mt-2 text-sm text-kcd-ink/75">{m.description}</p>
-                <ul className="mt-4 space-y-2 text-sm text-kcd-ink/80">
-                  {m.activities.map((a) => (
-                    <li key={a} className="flex items-start gap-2">
-                      <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-kcd-primary" />
-                      <span>{a}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-6">
-                  {m.cta.disabled ? (
-                    <span className="inline-flex h-11 items-center justify-center rounded-full border border-kcd-border bg-kcd-subtle px-5 text-xs font-bold uppercase tracking-wider text-kcd-muted">
-                      ✉️ {m.cta.label}
-                    </span>
+        <ul className={cn('grid gap-6', COLUMNS[Math.min(mixers.length, 3)])}>
+          {mixers.map((m) => {
+            const accent = ACCENTS[m.accent];
+            return (
+              <li key={m.name} className="flex">
+                <article className="flex w-full flex-col overflow-hidden rounded-3xl border border-kcd-border bg-white shadow-card">
+                  {m.image ? (
+                    <div className="relative aspect-[1200/630] w-full bg-kcd-navy">
+                      <Image
+                        src={m.image}
+                        // Art that only restates the heading beside it is
+                        // decorative; a real `imageAlt` opts back in.
+                        alt={m.imageAlt ?? ''}
+                        aria-hidden={m.imageAlt ? undefined : true}
+                        fill
+                        sizes="(max-width: 640px) 100vw, 576px"
+                        className="object-cover"
+                      />
+                    </div>
                   ) : (
-                    <Link
-                      href={m.cta.href}
-                      className="inline-flex h-11 items-center justify-center rounded-full bg-kcd-primary px-5 text-xs font-bold uppercase tracking-wider !text-white"
-                    >
-                      🎟️ {m.cta.label}
-                    </Link>
+                    <div className={cn('h-24 w-full bg-gradient-to-br', accent.header)} aria-hidden />
                   )}
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-        <p className="mt-8 text-center text-sm text-kcd-ink/65">
-          🎟️ Mixers are exclusively for KCD Gujarat 2026 registered attendees. ✉️ Community Leaders Mixer is invite only.
-        </p>
+                  <div className="flex flex-1 flex-col p-6">
+                    <h3 className="font-display text-xl font-bold text-kcd-ink">{m.name}</h3>
+                    {(m.when || m.where) && (
+                      <p className="mt-1 text-sm font-semibold text-kcd-ink/80">
+                        {[m.when, m.where].filter(Boolean).join(' · ')}
+                      </p>
+                    )}
+                    {m.description && <p className="mt-2 text-sm text-kcd-ink/75">{m.description}</p>}
+                    {m.activities.length > 0 && (
+                      <ul className="mt-4 space-y-2 text-sm text-kcd-ink/80">
+                        {m.activities.map((a) => (
+                          <li key={a} className="flex items-start gap-2">
+                            <span
+                              className={cn('mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full', accent.bullet)}
+                              aria-hidden
+                            />
+                            <span>{a}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {/* No sign-up of our own: a mixer either links out, says
+                        invite only, or says nothing and relies on the footnote. */}
+                    {(m.inviteOnly || m.rsvpUrl) && (
+                      <div className="mt-6">
+                        {m.inviteOnly ? (
+                          <span className="inline-flex h-11 items-center justify-center rounded-full border border-kcd-border bg-kcd-subtle px-5 text-xs font-bold uppercase tracking-wider text-kcd-ink/70">
+                            Invite only
+                          </span>
+                        ) : (
+                          <a
+                            href={m.rsvpUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex h-11 items-center justify-center rounded-full bg-kcd-primary px-5 text-xs font-bold uppercase tracking-wider !text-white"
+                          >
+                            {m.rsvpLabel}
+                            <span className="sr-only"> (opens in a new tab)</span>
+                          </a>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </article>
+              </li>
+            );
+          })}
+        </ul>
+        {config.footnote && (
+          <p className="mt-8 text-center text-sm text-kcd-ink/70">{config.footnote}</p>
+        )}
       </Container>
     </section>
   );
