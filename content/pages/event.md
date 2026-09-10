@@ -136,12 +136,6 @@ timeline:
     endTime: "16:25"
     label: "High Tea + Solutions Showcase"
     icon: "🍵"
-  - time: "17:00"
-    endTime: "17:10"
-    label: "Reserved Lightning Talk"
-    icon: "📌"
-    room: "Hall 2"
-    glance: false
   - time: "17:15"
     endTime: "17:30"
     label: "Closing: Vote of Thanks, Group Photo, Swag"

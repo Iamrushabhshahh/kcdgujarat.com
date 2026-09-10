@@ -2,7 +2,7 @@
 name: "Shivang Shandilya"
 role: "Developer Relations"
 company: "Vultr"
-photo: "/images/speakers/placeholder.svg"
+photo: "/images/speakers/shivang-shandilya-e24bf597.jpg"
 sessions: ["visual-retrieval-ai-agents"]
 ---
 
