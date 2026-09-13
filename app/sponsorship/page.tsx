@@ -20,6 +20,7 @@ const FALLBACK_TIERS = [
   { name: 'Platinum', slug: 'platinum', price: 'priority placement', group: 'package', perks: ['Stage presence', 'Premium booth', 'Logo on stage backdrop'] },
   { name: 'Gold', slug: 'gold', price: 'standard placement', group: 'package', perks: ['Booth space', 'Logo on website + lanyard'] },
   { name: 'Silver', slug: 'silver', price: 'community tier', group: 'package', perks: ['Logo on website', 'Recognition during opening'] },
+  { name: 'Bronze', slug: 'bronze', price: 'entry tier', group: 'package', perks: ['Table space', 'Logo on website + venue'] },
   { name: 'Community', slug: 'community', price: 'in-kind', group: 'additional', perks: ['Booth or signage', 'Cross-promotion'] },
   { name: 'Diversity', slug: 'diversity', price: 'in-kind', group: 'additional', perks: ['Booth or signage', 'Cross-promotion'] },
   { name: 'Media', slug: 'media', price: 'in-kind', group: 'additional', perks: ['Logo on website', 'Cross-promotion'] },

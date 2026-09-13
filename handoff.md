@@ -2,7 +2,7 @@
 
 > **READ THIS FIRST.** Every Claude Code session begins here. Update this file at end of every meaningful change so the next session boots with current context. CLAUDE.md is canonical for conventions; this file is canonical for *active work*.
 
-_Last updated: 2026-09-10 (Mumshad lightning talk + photo; Shivang photo — all 37 speakers now have a real headshot)_
+_Last updated: 2026-09-13 (bronze sponsor tier added; OpenObserve is the first bronze sponsor)_
 
 ## 1. Goal
 
@@ -59,10 +59,10 @@ Ship the public marketing/event site for **KCD Gujarat 2026** — a CNCF-backed,
 
 ### Sponsors (logo wall)
 
-- Markdown under `content/sponsors/*.md`. Tier enum: `platinum | gold | silver | community | diversity | media`.
+- Markdown under `content/sponsors/*.md`. Tier enum: `platinum | gold | silver | bronze | community | diversity | media`.
 - Rendered by `SponsorTier` (centered flex wrap, fixed card size `h-28 w-44` → `md:h-36 md:w-56`) on homepage `SponsorStrip` and `/sponsors`. Logo height still scales by tier.
 - `render: false` hides a sponsor (e.g. `sample-sponsor.md`).
-- Current published: Valkey (gold), SUSE (diversity) — SUSE logo path is `/images/sponsors/suse.svg` (asset may still need adding).
+- Current published: Valkey (gold), Coredge.io (gold), CNCF + KodeKloud (silver), OpenObserve (bronze), SUSE (diversity) — SUSE logo path is `/images/sponsors/suse.svg` (asset may still need adding).
 
 ### Venue (`Narayani Heights`, confirmed 2026-08-23 — **not yet announced**)
 
@@ -148,7 +148,11 @@ After pull: `pnpm install && pnpm typecheck && pnpm content:validate && pnpm bui
 
 Dev: use `pnpm dev` (runs content watcher + Next). Restart after killing stale `next` processes.
 
-## 4. Recent changes (2026-09-10)
+## 4. Recent changes (2026-09-13)
+
+81. **Bronze sponsor tier added.** `content/sponsors/openobserve.md` already declared `tier: "bronze"`, but `bronze` was not in the enum, so `content:validate` and `typecheck` would have failed. Added it in four places, always between `silver` and `community`: the `SponsorFrontmatter.tier` enum in `lib/schema.ts`, `TIER_LABEL` + `TIER_LOGO` in `components/site/SponsorTier.tsx` (logo height `h-11 md:h-13` — one notch under silver's `h-12 md:h-14`; `h-13` is valid because Tailwind v4 generates spacing dynamically), and the `TIERS` arrays in `components/sections/SponsorStrip.tsx` and `app/sponsors/page.tsx`. Adding a tier to the enum without adding it to both `Record<Sponsor['tier'], …>` maps is a typecheck break, so all four move together. `/sponsorship` also gained a Bronze entry in `FALLBACK_TIERS` — the real copy (US$ 1200, table space, 3 tickets) was already in `content/pages/sponsorship.md`, so the fallback only matters when that markdown is missing. Also fixed the missing trailing newline on `openobserve.md`. `content:validate`, `typecheck`, `lint` green.
+
+## 4b. Earlier changes (2026-09-10)
 
 80. **Mumshad Mannambeth's lightning talk fills the last reserved slot.** `content/sessions/kubernetes-was-not-built-for-this.md` (17:00–17:10, Hall 2, Lightning, AI Inference + Agentic, All levels) + `content/speakers/mumshad-mannambeth.md` (Founder & CEO, KodeKloud — who are also a **silver sponsor**, `content/sponsors/kodekloud.md`). The 17:00 Hall 2 "Reserved Lightning Talk" `timeline` row was deleted, so the session wins that hall by itself. `tags` is omitted because the abstract names no projects — 8 of the 26 sessions have no tags, so that is the precedent rather than inventing some. Verified on a production build: `/schedule` shows the talk beside the DBaaS talk in the 17:00 parallel-lightning slot, "Reserved Lightning Talk" is gone, and both new routes plus their sitemap entries are live. `content:validate`, `typecheck`, `lint`, `build` green.
 
