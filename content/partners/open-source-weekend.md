@@ -1,7 +1,7 @@
 ---
 name: "Open Source Weekend"
 url: "https://opensourceweekend.org/"
-logo: "/images/open-source-weekend.jpeg"
+logo: "/images/open-source-weekend.png"
 order: 37
-render: false
+render: true
 ---
